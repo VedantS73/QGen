@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    {% if message %}
+        <div>{{message}}</div>
+    {% endif %}
+    
+    <div class="container-fluid pb-3">
+        <h4>Make a new paper</h4>
+          <div class="d-grid gap-3" style="grid-template-columns: 1fr;">
+            <div class="bg-light border rounded-3">
+              <form style="padding: 30px" action="{% url 'papergen2' %}" method="post">
+                {% csrf_token %}
+                <div id="core-paper">
+                  <div class="form-group">
+                    <label for="InputQuestion">Heading</label>
+                    <input type="text" name="heading" class="form-control" id="InputQuestion" aria-describedby="InputQuestion" value="{{heading}}" readonly>
+                    {% comment %} <small class="form-text text-muted">These added questions can be then added in question papers.</small> {% endcomment %}
+                  </div>
+                  <div class="form-group">
+                    <label for="AnswerInput">Extra Details</label>
+                    <textarea name="extradetails" class="form-control" id="extraDetails" rows="3" readonly>{{extradetails}}</textarea>
+                    {% comment %} <input type="text" class="form-control" id="AnswerInput" placeholder="Answer to the question"> {% endcomment %}
+                  </div>
+                  <div class="form-group">
+                    <label for="subjectsel">Subject</label>
+                    <input type="text" name="subjecsel" class="form-control" id="subjecsel" aria-describedby="subjecsel" value="{{subsel}}" readonly>
+                    {% comment %} <input type="text" class="form-control" id="AnswerInput" placeholder="Answer to the question"> {% endcomment %}
+                  </div>
+                  <input type="hidden" name="heading" value="{{heading}}">
+                  <input type="hidden" name="marksboxcheck" value="{{marksboxcheck}}">
+                  <input type="hidden" name="diffslider" value="{{diffslider}}">
+                  <input type="hidden" name="ptype" value="{{ptype}}">
+                    <br>
+                    <label for="subsel">Topics To Be Included</label>
+                    <br>
+                    {% for topic in topics %}
+                        <div class="form-check">
+                          <input type="checkbox" value="{{topic.id}}" id="chkBox" name="topics" checked>
+                          <label for="chkBox">{{topic.name}}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Generate</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <script>
+            var slider = document.getElementById("myRange");
+            var output = document.getElementById("difficulty");
+            output.innerHTML = `Difficulty Level : ${slider.value}`; // Display the default slider value
+
+            // Update the current slider value (each time you drag the slider handle)
+            slider.oninput = function() {
+            output.innerHTML = `Difficulty Level : ${this.value}`;
+            }
+        </script>
+{% endblock %}

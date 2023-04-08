@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    {% if message %}
+        <div>{{message}}</div>
+    {% endif %}
+    <div class="container-fluid pb-3">
+      <h4>Make a new paper</h4>
+        <div class="d-grid gap-3" style="grid-template-columns: 1fr;">
+          <div class="bg-light border rounded-3">
+            <form style="padding: 30px" action="{% url 'myquestions' %}" method="post">
+              {% csrf_token %}
+              <div id="core-paper">
+                <div class="form-group">
+                  <label for="InputQuestion">Heading</label>
+                  <input type="text" name="question" class="form-control" id="InputQuestion" aria-describedby="InputQuestion" placeholder="Enter Header Text">
+                  {% comment %} <small class="form-text text-muted">These added questions can be then added in question papers.</small> {% endcomment %}
+                </div>
+                <div class="form-group">
+                  <label for="AnswerInput">Extra Details</label>
+                  <textarea name="extradetails" class="form-control" id="extraDetails" rows="3" placeholder="Extra Details Below the Header"></textarea>
+                  {% comment %} <input type="text" class="form-control" id="AnswerInput" placeholder="Answer to the question"> {% endcomment %}
+                </div>
+                <div class="form-check">
+                  <input id="marksboxcheck" type="checkbox" class="form-check-input">
+                  <label class="form-check-label" for="exampleCheck1">Add Marks Box (for checking purposes).</label>
+                </div>
+              </div>
+              <button type="button" id="addqbtn" class="btn btn-outline-primary py-2 px-5 my-3">Add Questions</button>
+              <br>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+        {% comment %} THIS IS HIDDEN BLOCK {% endcomment %}
+        <div id="addqbox" class="card floatcard">
+          <div class="card-header">
+            Add Existing Questions
+            <button aria-label="Close" id="remqbtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+              </svg>
+            </button>
+          </div>
+          <form role="search" style="width:95%; margin: 20px auto 8px auto">
+            <input id="search-box" type="search" class="form-control" placeholder="Search..." aria-label="Search">
+          </form>
+          <div class="d-grid gap-3 p-4" style="grid-template-columns: 1fr 2fr;">
+            <div class="bg-light border rounded-3" id="questionbox">
+              {% if questions %}
+                {% for question in questions %}
+                  <div class="card" >
+                    {% comment %} PRINT QUESTIONS {% endcomment %}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+          <a href="{% url 'myquestions' %}" class="link-primary m-5">Or add new questions to database</a>
+          <br><br>
+      </div>
+      {% comment %} END OF HIDDEN BLOCK {% endcomment %}
+      <br>
+    </div>
+
+{% endblock %}
+

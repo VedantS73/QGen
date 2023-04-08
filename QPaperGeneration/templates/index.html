@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    {% if message %}
+        <div>{{message}}</div>
+    {% endif %}
+    
+    <div class="container-fluid pb-3">
+        <h4>Make a new paper</h4>
+          <div class="d-grid gap-3" style="grid-template-columns: 1fr;">
+            <div class="bg-light border rounded-3">
+              <form style="padding: 30px" action="{% url 'papergen1' %}" method="post">
+                {% csrf_token %}
+                <div id="core-paper">
+                  <div class="form-group">
+                    <label for="InputQuestion">Heading</label>
+                    <input type="text" name="heading" class="form-control" id="InputQuestion" aria-describedby="InputQuestion" placeholder="Enter Header Text" required>
+                    {% comment %} <small class="form-text text-muted">These added questions can be then added in question papers.</small> {% endcomment %}
+                  </div>
+                  <div class="form-group">
+                    <label for="AnswerInput">Extra Details</label>
+                    <textarea name="extradetails" class="form-control" id="extraDetails" rows="3" placeholder="Extra Details Below the Header" required></textarea>
+                    {% comment %} <input type="text" class="form-control" id="AnswerInput" placeholder="Answer to the question"> {% endcomment %}
+                  </div>
+                  <div class="form-check">
+                    <input name="marksboxcheck" type="checkbox" class="form-check-input">
+                    <label class="form-check-label" for="exampleCheck1">Add Marks Box (for checking purposes).</label>
+                  </div>
+                  <br>
+                    <label for="ptype">Paper Format</label>
+                    <select name="ptype" id="ptype">
+                        <option value=1>Unit Test Pattern - 20Marks</option>
+                        <option value=2>Semester Pattern - 80Marks</option>
+                        <option value=3>Full Pattern - 100Marks</option>
+                    </select>
+                    <br>
+                    <br>
+                    <label for="difficulty" id="difficulty">Difficulty Level : 3</label>
+                    <div class="slidecontainer">
+                        <input type="range" min="1" max="6" value="3" class="slider" name="diffslider" id="myRange">
+                    </div>
+                    <br>
+                    <label for="subsel">Subject</label>
+                      <select name="subsel" id="subsel">
+                        {% for subject in subjects %}
+                            <option value="{{subject.id}}">{{subject.name}}</option>
+                        {% endfor %}
+                      </select>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Continue</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <script>
+            var slider = document.getElementById("myRange");
+            var output = document.getElementById("difficulty");
+            output.innerHTML = `Difficulty Level : ${slider.value}`; // Display the default slider value
+
+            // Update the current slider value (each time you drag the slider handle)
+            slider.oninput = function() {
+            output.innerHTML = `Difficulty Level : ${this.value}`;
+            }
+        </script>
+{% endblock %}
