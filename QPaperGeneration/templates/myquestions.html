@@ -1,86 +1,126 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    {% if message %}
-        <div>{{message}}</div>
-    {% endif %}
-    <div class="container-fluid pb-3">
-      <h4>Add a new Question</h4>
-        <div class="d-grid gap-3" style="grid-template-columns: 1fr;">
-          <div class="bg-light border rounded-3">
-            <form style="padding: 30px" action="{% url 'myquestions' %}" method="post">
-              {% csrf_token %}
-              <div class="form-group">
-                <label for="InputQuestion">Question</label>
-                <textarea name="question" class="form-control" id="InputQuestion" rows="3" placeholder="Enter question" required="true"></textarea>
-                {% comment %} <label for="InputQuestion">Question</label>
-                <input type="text" name="question" class="form-control" id="InputQuestion" aria-describedby="InputQuestion" placeholder="Enter question" required> {% endcomment %}
-                {% comment %} <small class="form-text text-muted">These added questions can be then added in question papers.</small> {% endcomment %}
-              </div>
-              <div class="form-group">
-                <label for="subText">Subject</label>
-                <input type="text" name="subject" class="form-control" id="subText" aria-describedby="subText" placeholder="Enter Subject" required="true">
-                {% comment %} <small class="form-text text-muted">These added questions can be then added in question papers.</small> {% endcomment %}
-              </div>
-              <div class="form-group">
-                <label for="topicText">Subject Sub-Topic</label>
-                <input type="text" name="topic" class="form-control" id="topicText" aria-describedby="topicText" placeholder="Enter Topic" required="true">
-                {% comment %} <small class="form-text text-muted">These added questions can be then added in question papers.</small> {% endcomment %}
-              </div>
-              <div class="form-group">
-                <label for="marksText">Marks</label>
-                <input type="text" name="marks" class="form-control" id="marksText" aria-describedby="marksText" placeholder="Enter Marks" required="true">
-                {% comment %} <small class="form-text text-muted">These added questions can be then added in question papers.</small> {% endcomment %}
-              </div>
-              <div class="form-group">
-                <label for="imgTxt">Image URL</label>
-                <input type="text" name="imgurl" class="form-control" id="imgTxt" aria-describedby="imgTxt" placeholder="Enter image (if required)">
-                {% comment %} <small class="form-text text-muted">These added questions can be then added in question papers.</small> {% endcomment %}
-              </div>
-              <div class="form-group">
-                <label for="AnswerInput">Answer</label>
-                <textarea name="answer" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Answer to the question"></textarea>
-                {% comment %} <input type="text" class="form-control" id="AnswerInput" placeholder="Answer to the question"> {% endcomment %}
-              </div>
-              <label for="difficulty">Difficulty Level</label>
-              <select name="difficulty" id="difficulty">
-                <option value=1>1</option>
-                <option value=2>2</option>
-                <option value=3>3</option>
-                <option value=4>4</option>
-                <option value=5>5</option>
-                <option value=6>6</option>
-              </select>
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Above data is correct and add to database</label>
-              </div>
-              <br>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-          </div>
-        </div>
-      <br>
-      <div class="d-flex align-items-center">
-        <h4 class="w-50 me-3">Or Browse Existing Questions</h4>
-        <form class="w-75 me-3" role="search">
-          <input type="search" class="form-control" placeholder="Search..." aria-label="Search" style="margin-bottom: 8px">
-        </form>
-      </div>
-      <div class="d-grid gap-3" style="grid-template-columns: 1fr 2fr;">
-        <div class="bg-light border rounded-3">
-          {% for question in questions %}
-          <div class="card" >
-            {% comment %} <img class="card-img-top" src="..." alt="Card image cap"> {% endcomment %}
-            <div class="card-body">
-              <h5 class="card-title">{{question.question}}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Question by : {{question.user}}</h6>
-              <a href="#" class="card-link">VIEW QUESTION</a>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
+{% if message %}
+<div>{{message}}</div>
+{% endif %}
+<h1 class="fonts">Add a new Question</h1>
+<div class="cards" style="grid-template-columns: 1fr;">
+  <form class="container" action="{% url 'myquestions' %}" method="post">
+    {% csrf_token %}
+    <br>
+    <h3 class="font">Questions</h3>
+    <div class="form-group">
+      <textarea name="question" class="form-control border border-info-subtle border-3 "
+        placeholder="Type the Question here" required="true" rows="3"></textarea>
+    </div>
+    <br>
+    <h3 class="font">Subject</h3>
+    <div class="form-group">
+      <input name="subject" type="text" class="form-control border border-info-subtle border-3"
+        placeholder="Enter the Subject here" required="true">
+    </div>
+    <br>
+    <h3 class="font">Subject Sub-Topic</h3>
+    <div class="form-group">
+      <input name="topic" type="text" class="form-control border border-info-subtle border-3"
+        placeholder="Enter the Topic here" required="true">
+    </div>
+    <br>
+    <h3 class="font">Marks</h3>
+    <div class="form-group">
+      <input name="marks" type="text" class="form-control border border-info-subtle border-3"
+        placeholder="Enter the marks here" required="true">
+    </div>
+    <br>
+    <h3 class="font">Answers</h3>
+    <div class="form-group">
+      <textarea name="answer" class="form-control border border-info-subtle border-3"
+        placeholder="Enter the answer of the question here" rows="3"></textarea>
+    </div>
+    <br>
+    <div class="row">
+      <div style="width:150px">Difficulty-level</div>
+      <div class="col-1 form-group">
+        <select name="difficulty" class="form-control col-1">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
       </div>
     </div>
+    <br>
+    <h3 class="font">CO's MAPPING</h3>
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" value="1" name="cos" checked>
+                  <label for="chkBox">CO1</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" value="2" name="cos">
+                  <label for="chkBox">CO2</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" value="3" name="cos">
+                  <label for="chkBox">CO3</label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" value="4" name="cos">
+                  <label for="chkBox">CO4</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" value="5" name="cos">
+                  <label for="chkBox">CO5</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" value="6" name="cos">
+                  <label for="chkBox">CO6</label>
+                </div>
+              </div>
+            </div>
+          </div>
+    <br>
+    <button type="submit" class="buttons">Submit</button>
+    <br>
+  </form>
+</div>
+<br>
+<div class="row">
+  <div class="col">
+    <h1 class="fonts">Or browse existing Questions</h1>
+  </div>
+</div>
+<div class="card" style="height: 500px;">
+  <div class="overflow-auto">
+    <div style="width:100%;">
+      {% for question in questions %}
+      <div class="card">
+        {% comment %} <img class="card-img-top" src="..." alt="Card image cap"> {% endcomment %}
+        <div class="card-body">
+          <h5 class="card-title">{{question.question}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Question by : {{question.user}}</h6>
+          <a href="#" class="card-link">VIEW QUESTION</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
 
 {% endblock %}

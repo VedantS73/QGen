@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+  
+  {% block body %}
+  {% if user.is_authenticated %}
+  
+  {% if message %}
+    <div>{{message}}</div>
+  {% endif %}
+
+  <h1 class="fonts">Make a New Page</h1>
+  <div class="cards">
+    <div class="d-grid gap-3" style="grid-template-columns: 1fr;">
+      <form class="container" action="{% url 'papergen2' %}" method="post">
+        {% csrf_token %}
+        <br>
+        <div id="core-paper">
+          <h3 class="font">Heading</h3>
+          <div class="form-group">
+            <input type="text" name="heading" class="form-control" value="{{heading}}" readonly>
+          </div>
+          <h3 class="font">Extra Details</h3>
+          <div class="form-group">
+            <textarea name="extradetails" class="form-control" rows="3" readonly>{{extradetails}}</textarea>
+          </div>
+          <h3 class="font">Subject</h3>
+          <div class="form-group">
+            <input type="text" name="subjecsel" class="form-control" value="{{subsel}}" readonly>
+            {% comment %} <input type="text" class="form-control" id="AnswerInput" placeholder="Answer to the question">
+            {% endcomment %}
+          </div>
+          <input type="hidden" name="heading" value="{{heading}}">
+          <input type="hidden" name="marksboxcheck" value="{{marksboxcheck}}">
+          <input type="hidden" name="diffslider" value="{{diffslider}}">
+          <input type="hidden" name="ptype" value="{{ptype}}">
+          <br>
+          <h3 class="font">Topics To Be Included</h3>
+          {% for topic in topics %}
+          <div class="form-check">
+            <input type="checkbox" value="{{topic.id}}" id="chkBox" name="topics" checked>
+            <label for="chkBox">{{topic.name}}</label>
+          </div>
+          {% endfor %}
+          <br>
+          <h3 class="font">CO's MAPPING</h3>
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" value="1" name="cos" checked>
+                  <label for="chkBox">CO1</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" value="2" name="cos" checked>
+                  <label for="chkBox">CO2</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" value="3" name="cos" checked>
+                  <label for="chkBox">CO3</label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" value="4" name="cos" checked>
+                  <label for="chkBox">CO4</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" value="5" name="cos" checked>
+                  <label for="chkBox">CO5</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-check">
+                  <input type="checkbox" value="6" name="cos" checked>
+                  <label for="chkBox">CO6</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="m-2"><button type="submit" class="buttons">Generate</button></div>
+        <br>
+      </form>
+    </div>
+  </div>
+
+  {% else %}
+  <div>Please Login to Continue</div>
+  {% endif %}
+{% endblock %}

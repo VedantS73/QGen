@@ -26,6 +26,7 @@ class QPattern(models.Model):
     answer = models.TextField(default="N/A")
     marks = models.IntegerField(default=0)
     difficulty = models.IntegerField(default=1)
+    co = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.topic} : {self.question}"

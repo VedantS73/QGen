@@ -5,8 +5,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.core.paginator import Paginator
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 import io
 from django.http import FileResponse
@@ -16,6 +15,7 @@ from QPaperGeneration.models import User, QPattern, Subject, Topic
 
  # Create your views here.
 
+@login_required(login_url='login')
 def index(request):
     return render(request, "index.html",{
         "subjects":Subject.objects.all()
@@ -76,7 +76,6 @@ def myquestions(request):
         user = request.user
         subject = request.POST["subject"]
         topic = request.POST["topic"]
-        imgurl = request.POST["imgurl"]
         marks = request.POST["marks"]
         difficulty = request.POST["difficulty"]
         question = request.POST["question"]
@@ -84,7 +83,7 @@ def myquestions(request):
 
         cursub, subcr = Subject.objects.get_or_create(name=subject)
         curtop, topcr = Topic.objects.get_or_create(name=topic,sub=cursub)
-        qamodel = QPattern.objects.create(user=user, topic=curtop, subject=cursub, imgurl=imgurl, question=question, answer=answer, marks=marks, difficulty=difficulty)
+        qamodel = QPattern.objects.create(user=user, topic=curtop, subject=cursub,question=question, answer=answer, marks=marks, difficulty=difficulty)
         qamodel.save()
         return HttpResponseRedirect(reverse("myquestions"))
     elif request.method == "GET":
@@ -102,7 +101,7 @@ def papergen1(request):
         checkboxstatus = False
         if request.POST.get('marksboxcheck',False) == 'on':
             checkboxstatus = True
-        return render(request, "papergen2.html",{
+        return render(request, "index2.html",{
             "heading": request.POST["heading"],
             "extradetails": request.POST["extradetails"],
             "marksboxcheck": checkboxstatus,
@@ -124,6 +123,9 @@ def papergen2(request):
     topics = request.POST.getlist('topics')
     topics = [eval(i) for i in topics]
     print(topics)
+    cos = request.POST.getlist('cos')
+    cos = [eval(i) for i in cos]
+    print(cos)
     twomqs = []
     sevmqs = []
     for topic in topics:
@@ -221,11 +223,3 @@ def papergen2(request):
     p.save()
     buffer.seek(0)
     return FileResponse(buffer, as_attachment=True, filename='PdfGenerated.pdf')
-
-def mypapers(request):
-    return render(request, "mypapers.html")
-
-@csrf_exempt
-def search(request,query):
-    results = QPattern.objects.filter(question__icontains=query)
-    return JsonResponse({'questions': list(results.values('question'))}, status=200)
