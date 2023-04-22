@@ -21,7 +21,7 @@ class QPattern(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="usr")
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name='topic')
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='sub', default=0)
-    imgurl = models.CharField(max_length=128)
+    imgurl = models.CharField(max_length=128, blank=True)
     question = models.TextField(default="N/A")
     answer = models.TextField(default="N/A")
     marks = models.IntegerField(default=0)

@@ -129,8 +129,8 @@ def papergen2(request):
     twomqs = []
     sevmqs = []
     for topic in topics:
-        tins = QPattern.objects.filter(marks=2).filter(topic=Topic.objects.filter(id=topic).first())
-        sins = QPattern.objects.filter(marks=7).filter(topic=Topic.objects.filter(id=topic).first())
+        tins = QPattern.objects.filter(marks=2).filter(topic=Topic.objects.filter(id=topic).first()).filter(co__in=cos)
+        sins = QPattern.objects.filter(marks=7).filter(topic=Topic.objects.filter(id=topic).first()).filter(co__in=cos)
         for tin in tins:
             twomqs.append(tin.question)
         for sin in sins:
