@@ -1,10 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@500&family=Roboto+Slab:wght@500&family=Signika:wght@600;700&display=swap');
 
-
 .fonts
 {
   font-family: "Signika";
-  color: #839b9c;
+  color: #556d6e;
   border: #839b9c solid;
   border-radius: 10px;
   display: inline-block;
@@ -13,7 +12,7 @@
 .font
 {
   font-family: "Roboto Slab";
-  color:#839b9c
+  color:#556d6e
 }
  
 body {
@@ -39,14 +38,16 @@ body {
 {
    width: 130px;
    height: 50px;
-   background:transparent;
+   background: #15686c;
+   color: white;
    border: #EEEEEE solid;
    border-radius: 5px;
    transition: 0.5s;
 }
 
 .buttons:hover{
-   background: #BDCDD6;
+   background: #c9f8fa;
+   color: black;
    border: #839b9c solid;
 }
 

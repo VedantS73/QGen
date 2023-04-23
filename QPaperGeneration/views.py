@@ -117,7 +117,8 @@ def papergen2(request):
     title=request.POST["heading"]
     subTitle=request.POST["extradetails"]
     marksboxcheck = request.POST["marksboxcheck"]
-    print("marksboxcheck is "+ marksboxcheck)
+    diffslider = request.POST["diffslider"]
+    print(diffslider)
     # qLines = ["Name :","Roll No :", "Class :","Subject :","Obtained Marks: ","Total Marks:"]
     qLines = []
     topics = request.POST.getlist('topics')
@@ -140,22 +141,23 @@ def papergen2(request):
     if request.POST["ptype"] == '1':
         qLines.append("Time : 1 Hour")
         qLines.append("Max Marks : 20")
-        if(marksboxcheck):
-            qLines.append("")
-            qLines.append("Details :")
-            qLines.append("Name : __________________________________________________________")
-            qLines.append("Subject : _________________ Date : ______________________________")
-            qLines.append("Roll No : ___________ Student ID : ______________________________")
-            qLines.append("")
-            qLines.append("")
+        qLines.append("")
+        qLines.append("")
+        qLines.append("1. Attempt both the questions to get full marks.")
+        qLines.append("2. Avoid using any unfair means during the paper.")
+        qLines.append("")
+        qLines.append("")
         qLines.append("Question 1 :  2marks × 3 = 6marks  (Attempt all 3)")
+        qLines.append("")
         twolist = random.sample(twomqs,3)
         for tq in twolist:
                 qLines.append(f"Q.{i} " + tq)
                 i=i+1
         i=1
         qLines.append(" ")
+        qLines.append("")
         qLines.append("Question 2 :  7marks × 2 = 14marks  (Attempt any 2)")
+        qLines.append("")
         sevlist = random.sample(sevmqs,3)
         for tq in sevlist:
                 qLines.append(f"Q.{i} " + tq)
@@ -163,16 +165,11 @@ def papergen2(request):
     elif request.POST["ptype"] == '2':
         qLines.append("Time : 1 Hour")
         qLines.append("Max Marks : 20")
-        if(marksboxcheck):
-            qLines.append("")
-            qLines.append("Details :")
-            qLines.append("Name : __________________________________________________________")
-            qLines.append("Subject : _________________ Date : ______________________________")
-            qLines.append("Roll No : ___________ Student ID : ______________________________")
-            qLines.append("")
-            qLines.append("")
+        qLines.append("")
+        qLines.append("")
         qLines.append("1. Question No 1 is compulsory")
-        qLines.append("2. Answer any four from the remaining")
+        qLines.append("2. Answer any three from the remaining")
+        qLines.append("2. Avoid using any unfair means during the paper.")
         qLines.append("")
         qLines.append("")
         qLines.append("Question 1 :  Answer any four from the following -- 20marks")
