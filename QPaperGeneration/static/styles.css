@@ -12,8 +12,9 @@
 .font
 {
   font-family: "Roboto Slab";
-  color:#556d6e
+  color:#556d6e;
 }
+
  
 body {
   background-image: url('project-management-doodle-pattern-64jq06zvvbe0j666.jpg');  
@@ -38,17 +39,17 @@ body {
 {
    width: 130px;
    height: 50px;
-   background: #15686c;
-   color: white;
+   background: #BDCDD6;
+   color: black;
    border: #EEEEEE solid;
    border-radius: 5px;
    transition: 0.5s;
 }
 
 .buttons:hover{
-   background: #c9f8fa;
-   color: black;
-   border: #839b9c solid;
+   background: #839b9c;
+   color: white;
+   border: #627475 solid;
 }
 
 .cards
@@ -63,16 +64,18 @@ body {
 {
    width: 85px;
    height: 30px;
-   background:transparent;
+   background:#BDCDD6;
    border: #EEEEEE solid;
+   color: black;
    border-radius: 5px;
    transition: 0.5s;
    text-align: center;
 }
 
 .btns:hover{
-   background: #BDCDD6;
-   border: #839b9c solid;
+   background: #839b9c;
+   color:white;
+   border: #627475 solid;
 }
 .shift{
   
