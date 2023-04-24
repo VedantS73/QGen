@@ -23,7 +23,7 @@ class QPattern(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='sub', default=0)
     imgurl = models.CharField(max_length=128, blank=True)
     question = models.TextField(default="N/A")
-    answer = models.TextField(default="N/A")
+    answer = models.TextField(default="N/A",blank=True)
     marks = models.IntegerField(default=0)
     difficulty = models.IntegerField(default=1)
     co = models.IntegerField(default=0)

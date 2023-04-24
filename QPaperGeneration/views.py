@@ -105,7 +105,7 @@ def papergen1(request):
             "heading": request.POST["heading"],
             "extradetails": request.POST["extradetails"],
             "marksboxcheck": checkboxstatus,
-            "diffslider": request.POST["diffslider"],
+            # "diffslider": request.POST["diffslider"],
             "ptype": request.POST["ptype"],
             "subsel": request.POST["subsel"],
             "topics": Topic.objects.filter(sub=Subject.objects.get(pk=request.POST["subsel"]))
@@ -117,8 +117,8 @@ def papergen2(request):
     title=request.POST["heading"]
     subTitle=request.POST["extradetails"]
     marksboxcheck = request.POST["marksboxcheck"]
-    diffslider = request.POST["diffslider"]
-    print(diffslider)
+    # diffslider = request.POST["diffslider"]
+    # print(diffslider)
     # qLines = ["Name :","Roll No :", "Class :","Subject :","Obtained Marks: ","Total Marks:"]
     qLines = []
     topics = request.POST.getlist('topics')
