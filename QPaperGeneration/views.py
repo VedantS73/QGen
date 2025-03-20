@@ -91,7 +91,7 @@ def myquestions(request):
         qa = Paginator(questionandanswers, 10)
         page_obj = qa.get_page(1)
         return render(request, "myquestions.html",{
-            "questions": page_obj,
+            "questions": questionandanswers,
         })
     else:
         HttpResponseRedirect("FORBIDDEN")
@@ -114,95 +114,130 @@ def papergen1(request):
         HttpResponseRedirect("FORBIDDEN")
 
 def papergen2(request):
-    title=request.POST["heading"]
-    subTitle=request.POST["extradetails"]
+    title = request.POST["heading"]
+    subTitle = request.POST["extradetails"]
     marksboxcheck = request.POST["marksboxcheck"]
-    # diffslider = request.POST["diffslider"]
-    # print(diffslider)
-    # qLines = ["Name :","Roll No :", "Class :","Subject :","Obtained Marks: ","Total Marks:"]
-    qLines = []
     topics = request.POST.getlist('topics')
     topics = [eval(i) for i in topics]
-    print(topics)
     cos = request.POST.getlist('cos')
     cos = [eval(i) for i in cos]
-    print(cos)
+
     twomqs = []
     sevmqs = []
+    tens = []
     for topic in topics:
-        tins = QPattern.objects.filter(marks=2).filter(topic=Topic.objects.filter(id=topic).first()).filter(co__in=cos)
-        sins = QPattern.objects.filter(marks=7).filter(topic=Topic.objects.filter(id=topic).first()).filter(co__in=cos)
+        tins = QPattern.objects.filter(marks=2).filter(topic=Topic.objects.filter(id=topic).first())
+        sins = QPattern.objects.filter(marks=5).filter(topic=Topic.objects.filter(id=topic).first())
+        tensa = QPattern.objects.filter(marks=10).filter(topic=Topic.objects.filter(id=topic).first())
         for tin in tins:
             twomqs.append(tin.question)
         for sin in sins:
             sevmqs.append(sin.question)
-    # random.choice(topics)
-    i=1
-    if request.POST["ptype"] == '1':
-        qLines.append("Time : 1 Hour")
-        qLines.append("Max Marks : 20")
-        qLines.append("")
-        qLines.append("")
-        qLines.append("1. Attempt both the questions to get full marks.")
-        qLines.append("2. Avoid using any unfair means during the paper.")
-        qLines.append("")
-        qLines.append("")
-        qLines.append("Question 1 :  2marks × 3 = 6marks  (Attempt all 3)")
-        qLines.append("")
-        twolist = random.sample(twomqs,3)
-        for tq in twolist:
-                qLines.append(f"Q.{i} " + tq)
-                i=i+1
-        i=1
-        qLines.append(" ")
-        qLines.append("")
-        qLines.append("Question 2 :  7marks × 2 = 14marks  (Attempt any 2)")
-        qLines.append("")
-        sevlist = random.sample(sevmqs,3)
-        for tq in sevlist:
-                qLines.append(f"Q.{i} " + tq)
-                i=i+1
-    elif request.POST["ptype"] == '2':
-        qLines.append("Time : 1 Hour")
-        qLines.append("Max Marks : 20")
-        qLines.append("")
-        qLines.append("")
-        qLines.append("1. Question No 1 is compulsory")
-        qLines.append("2. Answer any three from the remaining")
-        qLines.append("2. Avoid using any unfair means during the paper.")
-        qLines.append("")
-        qLines.append("")
-        qLines.append("Question 1 :  Answer any four from the following -- 20marks")
-        twolist = random.sample(twomqs,5)
-        for tq in twolist:
-                qLines.append(f"Q.{i} " + tq)
-                twomqs.remove(tq)
-                i=i+1
-        i=1
-        qLines.append(" ")
-        qLines.append("Question 2 :  Answer any two from the following -- 20marks")
-        sevlist = random.sample(sevmqs,3)
-        for tq in sevlist:
-                qLines.append(f"Q.{i} " + tq)
-                sevmqs.remove(tq)
-                i=i+1
-        i=1
-        qLines.append(" ")
-        qLines.append("Question 3 :  Answer any four from the following -- 20marks")
-        sevlist = random.sample(twomqs,6)
-        for tq in sevlist:
-                qLines.append(f"Q.{i} " + tq)
-                twomqs.remove(tq)
-                i=i+1
-        i=1
-        qLines.append(" ")
-        qLines.append("Question 4 :  Answer any two from the following -- 20marks")
-        sevlist = random.sample(sevmqs,3)
-        for tq in sevlist:
-                qLines.append(f"Q.{i} " + tq)
-                sevmqs.remove(tq)
-                i=i+1
+        for ten in tensa:
+            tens.append(ten.question)
+
+    # Prepare the questions based on the new format
+    qLines = []
+    i = 1
     
+    print("number of 2 marks questions: ", len(twomqs))
+    print("number of 5 marks questions: ", len(sevmqs))
+    print("number of 10 marks questions: ", len(tens))
+
+    if request.POST["ptype"] == '1':
+        # IA Paper - Q1: Any five questions (2 marks each), Q2: Any one question (5 marks), Q3: Any one question (5 marks)
+        qLines.append("Time : 1 Hour")
+        qLines.append("Max Marks : 20")
+        qLines.append("")
+        qLines.append("1. Attempt the following questions:")
+        qLines.append("2. Avoid using any unfair means during the paper.")
+        qLines.append("")
+
+        # Q1: Any five questions from 6 (2 marks each)
+        qLines.append("Question 1 : Any five questions - 2 marks each")
+        qLines.append(f"(Choose 5 from the following 6 questions)")
+        twolist = random.sample(twomqs, 6)
+        for tq in twolist:
+            qLines.append(f"Q.{i} " + tq)
+            i += 1
+
+        qLines.append("")  # Add spacing
+
+        # Q2: Any one question from 2 (5 marks)
+        sevlist = random.sample(sevmqs, 4)
+        qLines.append("Question 2 : Any one question - 5 marks")
+        qLines.append(f"(Choose 1 from the following 2 questions)")
+        
+        qLines.append(f"Q.{i} " + sevlist[0])
+        qLines.append(f"Q.{i} " + sevlist[1])
+        i += 1
+
+        qLines.append("")  # Add spacing
+
+        # Q3: Any one question from 2 (5 marks)
+        qLines.append("Question 3 : Any one question - 5 marks")
+        qLines.append(f"(Choose 1 from the following {len(sevmqs)} questions)")
+        qLines.append(f"Q.{i} " + sevlist[2])
+        qLines.append(f"Q.{i} " + sevlist[3])
+        i += 1
+    
+    if request.POST["ptype"] == '2':  # Assuming 'ptype == 2' is for Semester papers
+        qLines.append("Time : 3 Hours")
+        qLines.append("Max Marks : 100")
+        qLines.append("")
+        qLines.append("1. Answer all questions.")
+        qLines.append("2. All questions carry equal marks.")
+        qLines.append("3. Attempt any 3 questions from Q2 to Q6.")
+        qLines.append("4. Avoid using any unfair means during the paper.")
+        qLines.append("")
+
+        # Q1: Compulsory question (5 marks each)
+        qLines.append("Question 1 : Compulsory questions - 5 marks each")
+        comp_qs = random.sample(sevmqs, 4)  # Select 4 compulsory questions (5 marks each)
+        for tq in comp_qs:
+            qLines.append(f"Q.{i} " + tq)
+            i += 1
+
+        qLines.append("")  # Add spacing
+
+        # Q2-Q6: Each worth 20 marks (2 sub-questions for 10 marks each)
+        main_qs = random.sample(tens, 10)
+        qLines.append("Question 2 : Answer both sub-questions (10 marks each) - Total 20 marks")
+        qLines.append(f"Q.{i} " + main_qs[0])  # Sub-question 1
+        qLines.append(f"Q.{i+1} " + main_qs[1])  # Sub-question 2
+        i += 2
+
+        qLines.append("")
+
+        qLines.append("Question 3 : Answer both sub-questions (10 marks each) - Total 20 marks")
+        qLines.append(f"Q.{i} " + main_qs[2])  # Sub-question 1
+        qLines.append(f"Q.{i+1} " + main_qs[3])  # Sub-question 2
+        i += 2
+
+        qLines.append("")
+
+        qLines.append("Question 4 : Answer both sub-questions (10 marks each) - Total 20 marks")
+        qLines.append(f"Q.{i} " + main_qs[4])  # Sub-question 1
+        qLines.append(f"Q.{i+1} " + main_qs[5])  # Sub-question 2
+        i += 2
+
+        qLines.append("")
+
+        qLines.append("Question 5 : Answer both sub-questions (10 marks each) - Total 20 marks")
+        qLines.append(f"Q.{i} " + main_qs[6])  # Sub-question 1
+        qLines.append(f"Q.{i+1} " + main_qs[7])  # Sub-question 2
+        i += 2
+
+        qLines.append("")
+
+        qLines.append("Question 6 : Answer both sub-questions (10 marks each) - Total 20 marks")
+        qLines.append(f"Q.{i} " + main_qs[8])  # Sub-question 1
+        qLines.append(f"Q.{i+1} " + main_qs[9])  # Sub-question 2
+        i += 2
+
+        qLines.append("")
+
+    # Generate PDF
     buffer = io.BytesIO()
     p = canvas.Canvas(buffer)
     p.setFont("Times-Roman", 24)
